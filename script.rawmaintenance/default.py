@@ -1,3 +1,21 @@
+#   script.rawmaintenance, Raw Media's XBMC Maintenance Tool
+#   Copyright (C) 2014  Adam Parker
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
 import urllib,urllib2,re
 import xbmcgui,xbmcplugin
 import feedparser
@@ -224,7 +242,7 @@ def clearCache():
 	for entry in cacheEntries:
 		clear_cache_path = xbmc.translatePath(entry.path)
 		if os.path.exists(clear_cache_path)==True:    
-			for root, dirs, files in os.walk(entry.path):
+			for root, dirs, files in os.walk(clear_cache_path):
 				file_count = 0
 				file_count += len(files)
 				if file_count > 0:

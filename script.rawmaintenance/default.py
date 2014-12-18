@@ -11,6 +11,15 @@ mediaPath = os.path.join(addonPath, 'media')
 databasePath = xbmc.translatePath('special://database')
 
 #######################################################################
+#                          CLASSES
+#######################################################################
+
+class cacheEntry:
+    def __init__(self, namei, pathi):
+        self.name = namei
+        self.path = pathi
+
+#######################################################################
 #							RSS
 #######################################################################
 global rss
@@ -112,6 +121,20 @@ def get_params():
 #######################################################################
 #						Work Functions
 #######################################################################
+def setupCacheEntries():
+    entries = 5 #make sure this refelcts the amount of entries you have
+    dialogName = ["WTF", "4oD", "BBC iPlayer", "Simple Downloader", "ITV"]
+    pathName = ["special://profile/addon_data/plugin.video.whatthefurk/cache", "special://profile/addon_data/plugin.video.4od/cache",
+					"special://profile/addon_data/plugin.video.iplayer/iplayer_http_cache","special://profile/addon_data/script.module.simple.downloader",
+                    "special://profile/addon_data/plugin.video.itv/Images"]
+                    
+    cacheEntries = []
+    
+    for x in range(entries):
+        cacheEntries.append(cacheEntry(dialogName[x],pathName[x]))
+    
+    return cacheEntries
+
 
 def clearCache():
 	if os.path.exists(cachePath)==True:    
@@ -196,21 +219,18 @@ def clearCache():
 			else:
 				pass	
 				
-	dialogName = ["WTF", "4oD", "BBC iPlayer", "Simple Downloader", "ITV"]
-	pathName = ["special://profile/addon_data/plugin.video.whatthefurk/cache", "special://profile/addon_data/plugin.video.4od/cache",
-					"special://profile/addon_data/plugin.video.iplayer/iplayer_http_cache","special://profile/addon_data/script.module.simple.downloader",
-					"special://profile/addon_data/plugin.video.itv/Images"]
-										 
-	for currentDialog, currentPath in dialogName, pathName:
-		clear_cache_path = xbmc.translatePath(currentPath)
-		if os.path.exists(wtf_cache_path)==True:    
-			for root, dirs, files in os.walk(currentPath):
+	cacheEntries = setupCacheEntries()
+    									 
+	for entry in cacheEntries:
+		clear_cache_path = xbmc.translatePath(entry.path)
+		if os.path.exists(clear_cache_path)==True:    
+			for root, dirs, files in os.walk(entry.path):
 				file_count = 0
 				file_count += len(files)
 				if file_count > 0:
 
 					dialog = xbmcgui.Dialog()
-					if dialog.yesno("Raw Manager",str(file_count) + "%s cache files found"%(currentDialog), "Do you want to delete them?"):
+					if dialog.yesno("Raw Manager",str(file_count) + "%s cache files found"%(entry.name), "Do you want to delete them?"):
 						for f in files:
 							os.unlink(os.path.join(root, f))
 						for d in dirs:
@@ -243,8 +263,7 @@ def deleteThumbnails():
 	text13 = os.path.join(databasePath,"Textures13.db")
 	os.unlink(text13)
 		
-	if dialog.yesno("Restart XMBC", "Would you like to restart XBMC", "to rebuild thumbnail library?"):
-		xbmc.executebuiltin("RestartApp")
+	dialog.ok("Restart XBMC", "Please restart XBMC to rebuild thumbnail library")
 		
 def purgePackages():
     purgePath = xbmc.translatePath('special://home/addons/packages')

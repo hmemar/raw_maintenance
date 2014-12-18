@@ -72,8 +72,14 @@ def rssShowStory(story):
 if __name__ == '__main__':
     #check HDD freespace
     st = os.statvfs(xbmc.translatePath('special://home'))
-
-    if((st.f_bfree/1024) < 500):
+    
+    if st.f_frsize:
+        freespace = st.f_frsize * st.f_bavail/1024/1024
+    else:
+        freespace = st.f_bsize * st.f_bavail/1024/1024
+    
+    print "Free Space: %dMB"%(freespace)
+    if(freespace < 500):
         text = "You have less than 500MB of free space"
         text1 = "Please use the Raw Maintenance tool"
         text2 = "immediately to prevent system issues"

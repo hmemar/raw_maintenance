@@ -5,7 +5,7 @@
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
-
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -75,16 +75,19 @@ def rssShowStory(mode):
     dialog.ok(rss.entries[mode].title, rss.entries[mode].description)
         
 #######################################################################
-#						Build Main Menu
+#						Define Menus
 #######################################################################
 
 def mainMenu():
-	print os.path.join(mediaPath, "icon.png")
-	xbmc.executebuiltin("Container.SetViewMode(500)")
-	addItem('Clear Cache','url', 1,os.path.join(mediaPath, "clear.png"))
-	addItem('Delete Thumbnails', 'url', 2,os.path.join(mediaPath, "delete.png"))
-	addItem('Purge Packages', 'url', 3,os.path.join(mediaPath, "purge.png"))
-	addDir('News', 'url', 4,os.path.join(mediaPath, "news.png"))
+    xbmc.executebuiltin("Container.SetViewMode(500)")
+    addDir('Maintenance','url', 5,os.path.join(mediaPath, "maint.png"))
+    addDir('News', 'url', 4,os.path.join(mediaPath, "news.png"))
+    
+def maintMenu():
+    xbmc.executebuiltin("Container.SetViewMode(500)")
+    addItem('Clear Cache','url', 1,os.path.join(mediaPath, "clear.png"))
+    addItem('Delete Thumbnails', 'url', 2,os.path.join(mediaPath, "delete.png"))
+    addItem('Purge Packages', 'url', 3,os.path.join(mediaPath, "purge.png"))
 
 #######################################################################
 #						Add to menus
@@ -286,7 +289,10 @@ def deleteThumbnails():
 def purgePackages():
     purgePath = xbmc.translatePath('special://home/addons/packages')
     dialog = xbmcgui.Dialog()
-    if dialog.yesno("Delete Package Cache Files", "This will delete all package files.", "Are you sure?"):  
+    for root, dirs, files in os.walk(purgePath):
+			file_count = 0
+			file_count += len(files)
+    if dialog.yesno("Delete Package Cache Files", "%d packages found."%file_count, "Delete Them?"):  
 		for root, dirs, files in os.walk(purgePath):
 			file_count = 0
 			file_count += len(files)
@@ -339,9 +345,13 @@ elif mode==4:
         rssStartup()
         rssMenu()
         
+elif mode==5:
+        maintMenu()
+        
 elif mode >= 50:
         rssShowStory(mode)
 
 
 
 xbmcplugin.endOfDirectory(int(sys.argv[1]))
+

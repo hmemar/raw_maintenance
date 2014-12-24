@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.service.RawMaintenance"
+<addon id="plugin.service.rawmaintenance"
        name="Raw Maintenance Service"
        version="0.1.0"
        provider-name="Foreverska|Gombeek|Raw Media">

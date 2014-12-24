@@ -80,14 +80,14 @@ def rssShowStory(mode):
 
 def mainMenu():
     xbmc.executebuiltin("Container.SetViewMode(500)")
-    addDir('Maintenance','url', 5,os.path.join(mediaPath, "maint.png"))
+    addDir('Maintenance','url', 5,os.path.join(mediaPath, "maintenance.png"))
     addDir('News', 'url', 4,os.path.join(mediaPath, "news.png"))
     
 def maintMenu():
     xbmc.executebuiltin("Container.SetViewMode(500)")
-    addItem('Clear Cache','url', 1,os.path.join(mediaPath, "clear.png"))
-    addItem('Delete Thumbnails', 'url', 2,os.path.join(mediaPath, "delete.png"))
-    addItem('Purge Packages', 'url', 3,os.path.join(mediaPath, "purge.png"))
+    addItem('Clear Cache','url', 1,os.path.join(mediaPath, "cache.png"))
+    addItem('Delete Thumbnails', 'url', 2,os.path.join(mediaPath, "thumbs.png"))
+    addItem('Purge Packages', 'url', 3,os.path.join(mediaPath, "packages.png"))
 
 #######################################################################
 #						Add to menus

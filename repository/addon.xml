@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.lambda" name="lambda's Kodi Add-ons" version="1.0.9" provider-name="lambda">
+	<extension point="xbmc.addon.repository" name="lambda's Kodi Add-on Repository">
+		<dir>
+			<info compressed="false">http://raw.github.com/lambda81/lambda-repo/master/addons.xml</info>
+			<checksum>http://raw.github.com/lambda81/lambda-repo/master/addons.xml.md5</checksum>
+			<datadir zip="true">http://raw.github.com/lambda81/lambda-repo/master/</datadir>
+		</dir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary lang="en">Install Add-ons from Raw Media</summary>
+		<description lang="en">Download and install add-ons from Raw Media repository.</description>
+		<platform>all</platform>
+	</extension>
+</addon>
+

@@ -23,7 +23,7 @@
 
 </addon>
 
-<addon id="repository.lambda" name="lambda's Kodi Add-ons" version="1.0.9" provider-name="lambda">
+<addon id="repository.rawmaintenance" name="Raw Media's Kodi Add-ons" version="0.1.0" provider-name="Raw Media">
 	<extension point="xbmc.addon.repository" name="Raw Media's Kodi Add-on Repository">
 		<dir>
 			<info compressed="false">http://raw.github.com/rawmedia/raw_maintenance/master/rawmaintenance_repo/addons.xml</info>
@@ -38,7 +38,7 @@
 	</extension>
 </addon>
 
-<addon id="plugin.raw_builtin"
+<addon id="plugin.rawmaintenance"
        name="Raw Maintenance"
        version="0.1.0"
        provider-name="Foreverska|Gombeek|Raw Media">

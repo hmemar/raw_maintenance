@@ -47,13 +47,13 @@ global analytics
 def setupAnalytics():
     global analytics
 
-    if(os.path.isfile("uuid.txt") != True):
+    if(os.path.isfile(os.path.join(addonPath, "uuid.txt")) != True):
         userID = uuid.uuid1()
-        uuidFile = open("uuid.txt", "w")
+        uuidFile = open(os.path.join(addonPath,"uuid.txt"), "w")
         uuidFile.write(str(userID))
         uuidFile.close()
 
-    uuidFile = open("uuid.txt", "r")
+    uuidFile = open(os.path.join(addonPath, "uuid.txt"), "r")
     userID = uuidFile.readline()
     uuidFile.close()
 

@@ -33,6 +33,14 @@ class GAconnection:
         self.buildHeaders()
         self.buildParams()
         
+    def GASend(self, params, headers):
+		try:
+			self.google.request("POST", "/collect", urllib.urlencode(params), headers)
+		except:
+			return -1
+			
+		return 1
+        
     def GAResponse(self):
         try:
             response = self.google.getresponse()
@@ -48,7 +56,7 @@ class GAconnection:
         self.Body = [("t" , "event"), ("ec" , EventCatagory), ("ea" , EventAction)]
         self.Params = self.Params + self.Body
             
-        self.google.request("POST", "/collect", urllib.urlencode(self.Params), self.Headers)
+        self.GASend(self.Params, self.Body)
         return self.GAResponse()
             
         
@@ -58,5 +66,5 @@ class GAconnection:
         self.Params = self.Params + self.Body
         print self.Params
             
-        self.google.request("POST", "/collect", urllib.urlencode(self.Params), self.Headers)
+        self.GASend(self.Params, self.Body)
         return self.GAResponse()

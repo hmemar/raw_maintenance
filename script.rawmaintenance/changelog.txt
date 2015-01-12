@@ -2,7 +2,7 @@
 
 - First Attempt!
 
-0.1.1
+0.1.4
 
 - Added Google Analytics
 	Note:
@@ -10,7 +10,3 @@
 	This is simply to give us an idea of which features are used the 
 	most by which platforms so that we can best focus our development 
 	time to bring the community the best possible software.
-	
-0.1.2 & 0.1.3
-
-- Urgent Bugfixes

@@ -16,10 +16,12 @@
 
 
 
-import urllib,urllib2,re
+import urllib,urllib2,re,uuid, time
 import xbmcgui,xbmcplugin
 import feedparser
 import os
+
+import GATracker
 
 thumbnailPath = xbmc.translatePath('special://thumbnails');
 cachePath = os.path.join(xbmc.translatePath('special://home'), 'cache')
@@ -36,6 +38,27 @@ class cacheEntry:
     def __init__(self, namei, pathi):
         self.name = namei
         self.path = pathi
+        
+#######################################################################
+#						Google Analytics
+#######################################################################
+global analytics
+
+def setupAnalytics():
+    global analytics
+
+    if(os.path.isfile("uuid.txt") != True):
+        userID = uuid.uuid1()
+        uuidFile = open("uuid.txt", "w")
+        uuidFile.write(str(userID))
+        uuidFile.close()
+
+    uuidFile = open("uuid.txt", "r")
+    userID = uuidFile.readline()
+    uuidFile.close()
+
+    analytics = GATracker.GAconnection("UA-36482713-5", userID)
+
 
 #######################################################################
 #							RSS
@@ -53,6 +76,7 @@ def rssStartup():
         return -1
 
 def rssMenu():
+    analytics.sendPageView("RawMaintenenance","RSSmenu","RSS")
     print "----####RSS MENU CONFIG####----"
     global rss
     xbmc.executebuiltin("Container.SetViewMode(50)")
@@ -79,11 +103,14 @@ def rssShowStory(mode):
 #######################################################################
 
 def mainMenu():
+    global analytics
+    analytics.sendPageView("RawMaintenenance","mainmenu","main")
     xbmc.executebuiltin("Container.SetViewMode(500)")
     addDir('Maintenance','url', 5,os.path.join(mediaPath, "maintenance.png"))
     addDir('News', 'url', 4,os.path.join(mediaPath, "news.png"))
     
 def maintMenu():
+    analytics.sendPageView("RawMaintenenance","maintenance","maint")
     xbmc.executebuiltin("Container.SetViewMode(500)")
     addItem('Clear Cache','url', 1,os.path.join(mediaPath, "cache.png"))
     addItem('Delete Thumbnails', 'url', 2,os.path.join(mediaPath, "thumbs.png"))
@@ -158,159 +185,170 @@ def setupCacheEntries():
 
 
 def clearCache():
-	if os.path.exists(cachePath)==True:    
-		for root, dirs, files in os.walk(cachePath):
-			file_count = 0
-			file_count += len(files)
-			if file_count > 0:
-
-				dialog = xbmcgui.Dialog()
-				if dialog.yesno("Delete XBMC Cache Files", str(file_count) + " files found", "Do you want to delete them?"):
-				
-					for f in files:
-						try:
-							if (f == "xbmc.log" or f == "xbmc.old.log"): continue
-							os.unlink(os.path.join(root, f))
-						except:
-							pass
-					for d in dirs:
-						try:
-							shutil.rmtree(os.path.join(root, d))
-						except:
-							pass
-						
-			else:
-				pass
-	if os.path.exists(tempPath)==True:    
-		for root, dirs, files in os.walk(tempPath):
-			file_count = 0
-			file_count += len(files)
-			if file_count > 0:
-				dialog = xbmcgui.Dialog()
-				if dialog.yesno("Delete XBMC Temp Files", str(file_count) + " files found", "Do you want to delete them?"):
-					for f in files:
-						try:
-							if (f == "xbmc.log" or f == "xbmc.old.log"): continue
-							os.unlink(os.path.join(root, f))
-						except:
-							pass
-					for d in dirs:
-						try:
-							shutil.rmtree(os.path.join(root, d))
-						except:
-							pass
-						
-			else:
-				pass
-	if xbmc.getCondVisibility('system.platform.ATV2'):
-		atv2_cache_a = os.path.join('/private/var/mobile/Library/Caches/AppleTV/Video/', 'Other')
-		
-		for root, dirs, files in os.walk(atv2_cache_a):
-			file_count = 0
-			file_count += len(files)
-		
-			if file_count > 0:
-
-				dialog = xbmcgui.Dialog()
-				if dialog.yesno("Delete ATV2 Cache Files", str(file_count) + " files found in 'Other'", "Do you want to delete them?"):
-				
-					for f in files:
-						os.unlink(os.path.join(root, f))
-					for d in dirs:
-						shutil.rmtree(os.path.join(root, d))
-						
-			else:
-				pass
-		atv2_cache_b = os.path.join('/private/var/mobile/Library/Caches/AppleTV/Video/', 'LocalAndRental')
-		
-		for root, dirs, files in os.walk(atv2_cache_b):
-			file_count = 0
-			file_count += len(files)
-		
-			if file_count > 0:
-
-				dialog = xbmcgui.Dialog()
-				if dialog.yesno("Delete ATV2 Cache Files", str(file_count) + " files found in 'LocalAndRental'", "Do you want to delete them?"):
-				
-					for f in files:
-						os.unlink(os.path.join(root, f))
-					for d in dirs:
-						shutil.rmtree(os.path.join(root, d))
-						
-			else:
-				pass	
-				
-	cacheEntries = setupCacheEntries()
-    									 
-	for entry in cacheEntries:
-		clear_cache_path = xbmc.translatePath(entry.path)
-		if os.path.exists(clear_cache_path)==True:    
-			for root, dirs, files in os.walk(clear_cache_path):
-				file_count = 0
-				file_count += len(files)
-				if file_count > 0:
-
-					dialog = xbmcgui.Dialog()
-					if dialog.yesno("Raw Manager",str(file_count) + "%s cache files found"%(entry.name), "Do you want to delete them?"):
-						for f in files:
-							os.unlink(os.path.join(root, f))
-						for d in dirs:
-							shutil.rmtree(os.path.join(root, d))
-							
-				else:
-					pass
-				
-
-	dialog = xbmcgui.Dialog()
-	dialog.ok("Raw Maintenance", "Done Clearing Cache files")
+    global analytics
+    analytics.sendEvent("Maintenance", "ClearCache")
     
-	
+    if os.path.exists(cachePath)==True:    
+        for root, dirs, files in os.walk(cachePath):
+            file_count = 0
+            file_count += len(files)
+            if file_count > 0:
+
+                dialog = xbmcgui.Dialog()
+                if dialog.yesno("Delete XBMC Cache Files", str(file_count) + " files found", "Do you want to delete them?"):
+                
+                    for f in files:
+                        try:
+                            if (f == "xbmc.log" or f == "xbmc.old.log"): continue
+                            os.unlink(os.path.join(root, f))
+                        except:
+                            pass
+                    for d in dirs:
+                        try:
+                            shutil.rmtree(os.path.join(root, d))
+                        except:
+                            pass
+                        
+            else:
+                pass
+    if os.path.exists(tempPath)==True:    
+        for root, dirs, files in os.walk(tempPath):
+            file_count = 0
+            file_count += len(files)
+            if file_count > 0:
+                dialog = xbmcgui.Dialog()
+                if dialog.yesno("Delete XBMC Temp Files", str(file_count) + " files found", "Do you want to delete them?"):
+                    for f in files:
+                        try:
+                            if (f == "xbmc.log" or f == "xbmc.old.log"): continue
+                            os.unlink(os.path.join(root, f))
+                        except:
+                            pass
+                    for d in dirs:
+                        try:
+                            shutil.rmtree(os.path.join(root, d))
+                        except:
+                            pass
+                        
+            else:
+                pass
+    if xbmc.getCondVisibility('system.platform.ATV2'):
+        atv2_cache_a = os.path.join('/private/var/mobile/Library/Caches/AppleTV/Video/', 'Other')
+        
+        for root, dirs, files in os.walk(atv2_cache_a):
+            file_count = 0
+            file_count += len(files)
+        
+            if file_count > 0:
+
+                dialog = xbmcgui.Dialog()
+                if dialog.yesno("Delete ATV2 Cache Files", str(file_count) + " files found in 'Other'", "Do you want to delete them?"):
+                
+                    for f in files:
+                        os.unlink(os.path.join(root, f))
+                    for d in dirs:
+                        shutil.rmtree(os.path.join(root, d))
+                        
+            else:
+                pass
+        atv2_cache_b = os.path.join('/private/var/mobile/Library/Caches/AppleTV/Video/', 'LocalAndRental')
+        
+        for root, dirs, files in os.walk(atv2_cache_b):
+            file_count = 0
+            file_count += len(files)
+        
+            if file_count > 0:
+
+                dialog = xbmcgui.Dialog()
+                if dialog.yesno("Delete ATV2 Cache Files", str(file_count) + " files found in 'LocalAndRental'", "Do you want to delete them?"):
+                
+                    for f in files:
+                        os.unlink(os.path.join(root, f))
+                    for d in dirs:
+                        shutil.rmtree(os.path.join(root, d))
+                        
+            else:
+                pass    
+                
+    cacheEntries = setupCacheEntries()
+                                         
+    for entry in cacheEntries:
+        clear_cache_path = xbmc.translatePath(entry.path)
+        if os.path.exists(clear_cache_path)==True:    
+            for root, dirs, files in os.walk(clear_cache_path):
+                file_count = 0
+                file_count += len(files)
+                if file_count > 0:
+
+                    dialog = xbmcgui.Dialog()
+                    if dialog.yesno("Raw Manager",str(file_count) + "%s cache files found"%(entry.name), "Do you want to delete them?"):
+                        for f in files:
+                            os.unlink(os.path.join(root, f))
+                        for d in dirs:
+                            shutil.rmtree(os.path.join(root, d))
+                            
+                else:
+                    pass
+                
+
+    dialog = xbmcgui.Dialog()
+    dialog.ok("Raw Maintenance", "Done Clearing Cache files")
+    
+    
 def deleteThumbnails():
-	if os.path.exists(thumbnailPath)==True:  
-			dialog = xbmcgui.Dialog()
-			if dialog.yesno("Delete Thumbnails", "This option deletes all thumbnails", "Are you sure you want to do this?"):
-				for root, dirs, files in os.walk(thumbnailPath):
-					file_count = 0
-					file_count += len(files)
-					if file_count > 0:				
-						for f in files:
-							try:
-								os.unlink(os.path.join(root, f))
-							except:
-								pass				
-	else:
-		pass
-	
-	text13 = os.path.join(databasePath,"Textures13.db")
-	os.unlink(text13)
-		
-	dialog.ok("Restart XBMC", "Please restart XBMC to rebuild thumbnail library")
-		
+    global analytics
+    analytics.sendEvent("Maintenance", "DeleteThumbnails")
+    
+    if os.path.exists(thumbnailPath)==True:  
+            dialog = xbmcgui.Dialog()
+            if dialog.yesno("Delete Thumbnails", "This option deletes all thumbnails", "Are you sure you want to do this?"):
+                for root, dirs, files in os.walk(thumbnailPath):
+                    file_count = 0
+                    file_count += len(files)
+                    if file_count > 0:                
+                        for f in files:
+                            try:
+                                os.unlink(os.path.join(root, f))
+                            except:
+                                pass                
+    else:
+        pass
+    
+    text13 = os.path.join(databasePath,"Textures13.db")
+    os.unlink(text13)
+        
+    dialog.ok("Restart XBMC", "Please restart XBMC to rebuild thumbnail library")
+        
 def purgePackages():
+    global analytics
+    analytics.sendEvent("Maintenance", "PurgePacakges")
+    
     purgePath = xbmc.translatePath('special://home/addons/packages')
     dialog = xbmcgui.Dialog()
     for root, dirs, files in os.walk(purgePath):
-			file_count = 0
-			file_count += len(files)
+            file_count = 0
+            file_count += len(files)
     if dialog.yesno("Delete Package Cache Files", "%d packages found."%file_count, "Delete Them?"):  
-		for root, dirs, files in os.walk(purgePath):
-			file_count = 0
-			file_count += len(files)
-			if file_count > 0:            
-				for f in files:
-					os.unlink(os.path.join(root, f))
-				for d in dirs:
-					shutil.rmtree(os.path.join(root, d))
-				dialog = xbmcgui.Dialog()
-				dialog.ok("Raw Maintenance", "Deleting Packages all done")
-			else:
-				dialog = xbmcgui.Dialog()
-				dialog.ok("Raw Maintenance", "No Packages to Purge")
+        for root, dirs, files in os.walk(purgePath):
+            file_count = 0
+            file_count += len(files)
+            if file_count > 0:            
+                for f in files:
+                    os.unlink(os.path.join(root, f))
+                for d in dirs:
+                    shutil.rmtree(os.path.join(root, d))
+                dialog = xbmcgui.Dialog()
+                dialog.ok("Raw Maintenance", "Deleting Packages all done")
+            else:
+                dialog = xbmcgui.Dialog()
+                dialog.ok("Raw Maintenance", "No Packages to Purge")
 
 
 #######################################################################
 #						START MAIN
 #######################################################################              
+setupAnalytics()
+
 params=get_params()
 url=None
 name=None

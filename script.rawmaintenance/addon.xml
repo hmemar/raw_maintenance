@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.rawmaintenance"
-       name="Raw Maintenance"
+<addon id="script.rawmaintenance_dev"
+       name="Raw Maintenance DEV"
        version="0.1.0"
        provider-name="Foreverska|Gombeek|Raw Media">
   <requires>
@@ -11,7 +11,7 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary>Raw Maintinance</summary>
+    <summary>Raw Maintinance Dev</summary>
     <description>
 	Your one stop tool for maintaining your device. 
 	For support please visit www.no-issue.ca 

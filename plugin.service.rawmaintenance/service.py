@@ -20,7 +20,7 @@ import os, sys, statvfs, time, datetime
 from time import mktime
 import feedparser
  
-__addon__       = xbmcaddon.Addon(id='plugin.video.rawmaintenance')
+__addon__       = xbmcaddon.Addon(id='plugin.service.rawmaintenance')
 __addonname__   = __addon__.getAddonInfo('name')
 __icon__        = __addon__.getAddonInfo('icon')
 

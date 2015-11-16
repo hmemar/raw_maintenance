@@ -26,7 +26,7 @@ import GATracker
 thumbnailPath = xbmc.translatePath('special://thumbnails');
 cachePath = os.path.join(xbmc.translatePath('special://home'), 'cache')
 tempPath = xbmc.translatePath('special://temp')
-addonPath = os.path.join(os.path.join(xbmc.translatePath('special://home'), 'addons'),'script.rawmaintenance_dev')
+addonPath = os.path.join(os.path.join(xbmc.translatePath('special://home'), 'addons'),'script.rawmaintenance')
 mediaPath = os.path.join(addonPath, 'media')
 databasePath = xbmc.translatePath('special://database')
 

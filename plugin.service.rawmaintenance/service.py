@@ -88,7 +88,12 @@ def rssShowStory(story):
 
 if __name__ == '__main__':
     #check HDD freespace
-    st = os.statvfs(xbmc.translatePath('special://home'))
+    try:
+        st = os.statvfs(xbmc.translatePath('special://home'))
+    except:
+        print "Statvfs error.  Currently in development."
+        while not xbmc.abortRequested:    
+            xbmc.sleep(500)
     
     if st.f_frsize:
         freespace = st.f_frsize * st.f_bavail/1024/1024

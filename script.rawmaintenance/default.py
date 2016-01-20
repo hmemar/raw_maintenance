@@ -68,7 +68,7 @@ def NewsText():
     analytics.sendEvent("MainMenu", "News")
     
     dialog = xbmcgui.Dialog()
-    dialog.ok("Raw Maintenance", "News from our sponsor:", "Merry Christmas and Happy New Year!")
+    dialog.ok("Raw Maintenance", "News from Raw-Media.ca:", "Happy Valentines or if you're single anti-Valentines! Be sure you delete the thumbnails, they will come back.")
 
 
 #######################################################################
@@ -229,7 +229,7 @@ def clearCache():
             file_count += len(files)
             if file_count > 0:
                 dialog = xbmcgui.Dialog()
-                if dialog.yesno("Delete XBMC Temp Files", str(file_count) + " files found", "Do you want to delete them?"):
+                if dialog.yesno("Delete Kodi Temp Files", str(file_count) + " files found", "Do you want to delete them?"):
                     for f in files:
                         try:
                             if (f == "xbmc.log" or f == "xbmc.old.log"): continue

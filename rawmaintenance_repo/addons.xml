@@ -25,7 +25,7 @@
 
 <addon id="script.rawmaintenance"
        name="Raw Maintenance"
-       version="0.1.8"
+       version="0.1.9"
        provider-name="Foreverska|Gombeek|Raw Media">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
@@ -45,7 +45,7 @@
     <license></license>
     <source></source>
     <forum></forum>
-    <website></website>
+    <website>www.no-issue.ca</website>
   </extension>
 </addon>
 </addons>

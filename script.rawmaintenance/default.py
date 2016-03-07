@@ -68,7 +68,7 @@ def NewsText():
     analytics.sendEvent("MainMenu", "News")
     
     dialog = xbmcgui.Dialog()
-    dialog.ok("Raw Maintenance", "News from Raw-Media.ca:", "Happy Valentines or if you're single anti-Valentines! Be sure you delete the thumbnails, they will come back.")
+    dialog.ok("Raw Maintenance", "News from Raw-Media.ca:", "Happy St. Patricks Day! Don't forget to subscribe to our YouTube channel youtube.com/gombeek ")
 
 
 #######################################################################

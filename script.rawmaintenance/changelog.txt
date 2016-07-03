@@ -7,6 +7,13 @@ It is safe to delete all 3 items, the thumbnails will regenerate.
 
 Don’t forget to subscribe to our youtube channel youtube.com/gombeek
 
+
+0.1.11
+-Summer 2016 update, looking for inspiration on where to visit this year? 
+Cache - Just outside Budva, Montenegro
+Thumbnails - Santorini, Greece
+Packages - Lake Louise, Canada 
+
 0.1.10
 -News update
 

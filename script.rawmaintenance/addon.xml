@@ -2,7 +2,7 @@
 <addon id="script.rawmaintenance"
        name="Raw Maintenance"
        version="0.1.11"
-       provider-name="Foreverska|Gombeek|Raw Media">
+       provider-name="Foreverska|Husham|Raw Media">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
   </requires>
